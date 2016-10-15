@@ -5,7 +5,7 @@
  * @requires jQuery-UI
  * @requires jsPsych
  */
-var djPsych = (function djPsych($){
+var serverPsych = (function djPsych($){
 	var core ={};
 	var expLabel = "";
 	var staticUrl = "";
@@ -43,7 +43,7 @@ var djPsych = (function djPsych($){
 	/**
 	 * Initialize the djPSych.js module by pointing it to the right URLs for communicating with the server
 	 * @param {String} name		When you created your Experiment object on djPsych, this is the label field. your experiment lives at this URL
-	 * @param {String} staticRoot	corresponds to the STATIC_URL setting in the settings.py of the server. tells us where to fetch static content.
+	 * @param {String} staticRoot	corresponds to the MEDIA_URL setting in the settings.py of the server. tells us where to fetch static content.
 	 * @param {boolean) sandboxval	Set to true if you wish to use djPsych with the sandbox page of the djPsych server. Wont actually send but display it locally
 	 */
 	core.init = function init(name, staticRoot, sandboxval){
@@ -54,7 +54,7 @@ var djPsych = (function djPsych($){
 		
 		expLabel = name;
 		staticUrl = staticRoot;
-		prefix = staticUrl+'djexperiments/'+expLabel+'/';
+		prefix = staticUrl+'/'+expLabel+'/';
 	}
 	
 	core.getPrefix = function(){
@@ -138,7 +138,7 @@ var djPsych = (function djPsych($){
 	
 	/**
 	 * Requests a setting object from the server in order to start an experiment. 
-	 * @param {string} 		version		A string indicating the 'name' field of the global setting object to fetch from the server. With this you can choose which version of the experiment to fetch
+	 * @param {string} 		reqversion		A string indicating the 'name' field of the global setting object to fetch from the server. With this you can choose which version of the experiment to fetch
 	 * @param {function}	callback	A function to execute after receiving an answer. Will be called only if the server does not respond with an error. Default behavior is to display a dialog box with the error content. Receives the full server answer as the sole argument
 	 */
 	core.request = function request(callback, reqversion){
