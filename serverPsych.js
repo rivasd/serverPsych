@@ -232,10 +232,10 @@ var serverPsych = (function djPsych($){
 			// djPsych was started in sandbox mode, dont actually send the request, but gather data and display it in the <textarea>
 			chosenFormat = $("#id_sandbox-format").val();
 			if(chosenFormat == 'csv'){
-				$('#datadump').val(jsPsych.data.dataAsCSV());
+				$('#datadump').val(jsPsych.data.getDataAsCSV());
 			}
 			else if(chosenFormat =='json'){
-				$("#datadump").val(jsPsych.data.dataAsJSON());
+				$("#datadump").val(jsPsych.data.getDataAsJSON());
 			}
 		}
 		
