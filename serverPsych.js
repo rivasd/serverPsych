@@ -14,6 +14,11 @@ var serverPsych = (function djPsych($){
 	var meta = "";
 	var sandbox = false;
 	
+	var completion;
+	
+	/**@type Boolean */
+	var initialized = false
+	
 	/**
 	 * Maps trial-types to a function that should take a block from the server-returned timeline and output the same block but ready to be used
 	 * as is inside a jsPsych timeline.
@@ -41,20 +46,27 @@ var serverPsych = (function djPsych($){
 	 }
 	
 	/**
-	 * Initialize the djPSych.js module by pointing it to the right URLs for communicating with the server
-	 * @param {String} name		When you created your Experiment object on djPsych, this is the label field. your experiment lives at this URL
-	 * @param {String} staticRoot	corresponds to the MEDIA_URL setting in the settings.py of the server. tells us where to fetch static content.
-	 * @param {boolean) sandboxval	Set to true if you wish to use djPsych with the sandbox page of the djPsych server. Wont actually send but display it locally
+	 * Initialize the serverPsych module by pointing it to the right URLs for communicating with the server
+	 * @param {String} opts.name		When you created your Experiment object on djPsych, this is the label field. your experiment lives at this URL
+	 * @param {String} opts.staticRoot	corresponds to the MEDIA_URL setting in the settings.py of the server. tells us where to fetch static content.
+	 * @param {boolean) opts.sandboxval	Set to true if you wish to use djPsych with the sandbox page of the djPsych server. Wont actually send but display it locally
+	 * @param {Object}	opts.completion	An object describing how many runs of each type of setting have been completed to date. If a configuration has no data generated for it yet, it does not appear in this object
 	 */
-	core.init = function init(name, staticRoot, sandboxval){
+	core.init = function init(opts){
 		
-		if(typeof sandboxval != 'undefined'){
-			sandbox = sandboxval;
+		if(initialized === true){
+			throw "serverPsych is meant to be initialized only once";
 		}
 		
-		expLabel = name;
-		staticUrl = staticRoot;
+		if(typeof opts.sandboxval != 'undefined'){
+			sandbox = opts.sandboxval;
+		}
+		
+		expLabel = opts.name;
+		staticUrl = opts.staticRoot;
 		prefix = staticUrl+'/'+expLabel+'/';
+		completion = opts.completion || {};
+		initialized = true;
 	}
 	
 	core.getPrefix = function(){
@@ -174,17 +186,17 @@ var serverPsych = (function djPsych($){
 	/**
 	 * Sends collected data back to the server to be saved, taking care of filling the meta object based on what was received by the previous .request() call.
 	 * Displays a jquery-ui dialog box to indicate the result of the operation with a link towards the profile page.
-	 * @param	{jsPsych-data}	data		An array of objects as returned by a call to jsPsych.data.getData() or like the sole argument to the on_finish callback that can be passed to jsPsych.init()
-	 * @param	{Object}		lastChance	Optional object to be merged with the metadata, allows to pass additional metadata. shallow merge!
-	 * @param	{*=}			local		the lastChance function will be called with this as second parameter if given
+	 * @param	{jsPsych-data}	opts.data		An array of objects as returned by a call to jsPsych.data.getData() or like the sole argument to the on_finish callback that can be passed to jsPsych.init()
+	 * @param	{Object}		opts.lastChance	Optional object to be merged with the metadata, allows to pass additional metadata. shallow merge!
+	 * @param	{*=}			opts.local		the lastChance function will be called with this as second parameter if given
 	 */
-	core.save = function save(data, complete, lastChance, local){
+	core.save = function save(opts){
 		if(meta == "" || meta == undefined){
 			alert("metadata was not set by a previous call to djPsych.request");
 		} 
 		
 		payload = {};
-		payload.data = data;
+		payload.data = opts.data;
 		var metadata = {};
 		metadata.browser = get_browser_info();
 		metadata.name = meta.name;
@@ -192,10 +204,10 @@ var serverPsych = (function djPsych($){
 		metadata.current_exp = meta.current_exp;
 		metadata.exp_id = meta.exp_id;
 		metadata.previous = meta.previous;
-		metadata.completed = complete;
+		metadata.completed = opts.complete;
 		payload.meta = metadata;
-		if(typeof lastChance != "undefined"){
-			$.extend(payload.meta, lastChance);
+		if(typeof opts.lastChance != "undefined"){
+			$.extend(payload.meta, opts.lastChance);
 		}
 		
 		if(!sandbox){
