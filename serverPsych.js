@@ -158,6 +158,10 @@ var serverPsych = (function djPsych($){
 			reqversion = $("#id_sandbox-version").val();
 		}
 		
+		//default value of reqversion is 'final'
+		reqversion = reqversion || 'final';
+		
+		
 		$.ajax({
 			data:{
 				version: reqversion
