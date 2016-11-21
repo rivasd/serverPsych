@@ -92,6 +92,11 @@ var serverPsych = (function djPsych($){
 		sandbox = true;
 	}
 	
+	//get information about the completion state of the experiment for the current subject. this was set during initialization and should be done server side
+	core.completion = function(){
+		return completion;
+	};
+	
 	function unpackInstructions(timeline){
 		 var newTimeline = [];
 		timeline.forEach(function(elt, i, array) {
@@ -193,7 +198,7 @@ var serverPsych = (function djPsych($){
 	 * @param	{jsPsych-data}	opts.data		An array of objects as returned by a call to jsPsych.data.getData() or like the sole argument to the on_finish callback that can be passed to jsPsych.init()
 	 * @param	{Object}		opts.toSave	Optional object to be merged with the metadata, allows to pass additional metadata. shallow merge!
 	 * @param	{*=}			opts.local		the lastChance function will be called with this as second parameter if given
-	 * @param	{boolean}		opts.completed	True if this run marks the end of the experimentation (if spread across sessions). Defaults to True
+	 * @param	{boolean}		opts.complete	True if this run marks the end of the experimentation (if spread across sessions). Defaults to True
 	 * @param	{number|False}	opts.previous	A number to identify the participation this data should be added to, if this was a continuation. False if not applicable
 	 */
 	core.save = function save(opts){
