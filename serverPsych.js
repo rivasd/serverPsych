@@ -97,6 +97,16 @@ var serverPsych = (function djPsych($){
 		return completion;
 	};
 	
+	core.count = function(){
+		var count = 0;
+		for (var run in this.completion){
+			if(this.completion.hasOwnProperty(run)){
+				count += this.completion[run];
+			}
+		};
+		return count;
+	};
+	
 	function unpackInstructions(timeline){
 		 var newTimeline = [];
 		timeline.forEach(function(elt, i, array) {
