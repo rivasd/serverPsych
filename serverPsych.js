@@ -194,7 +194,7 @@ var serverPsych = (function djPsych($){
 				}
 				else{
 					meta = resp;
-					// resp.timeline = unpackInstructions(resp.timeline);
+					resp.timeline = unpackInstructions(resp.timeline);
 					callback(resp)
 				}
 			},
