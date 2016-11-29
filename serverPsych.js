@@ -99,9 +99,9 @@ var serverPsych = (function djPsych($){
 	
 	core.count = function(){
 		var count = 0;
-		for (var run in this.completion){
-			if(this.completion.hasOwnProperty(run)){
-				count += this.completion[run];
+		for (var run in completion){
+			if(completion.hasOwnProperty(run)){
+				count += completion[run];
 			}
 		};
 		return count;
@@ -205,8 +205,9 @@ var serverPsych = (function djPsych($){
 	/**
 	 * Sends collected data back to the server to be saved, taking care of filling the meta object based on what was received by the previous .request() call.
 	 * Displays a jquery-ui dialog box to indicate the result of the operation with a link towards the profile page.
+	 * @param	{Object}		opts			Object to hold the parameters
 	 * @param	{jsPsych-data}	opts.data		An array of objects as returned by a call to jsPsych.data.getData() or like the sole argument to the on_finish callback that can be passed to jsPsych.init()
-	 * @param	{Object}		opts.toSave	Optional object to be merged with the metadata, allows to pass additional metadata. shallow merge!
+	 * @param	{Object}		opts.toSave		Optional object to be merged with the metadata and will be saved for further use in the next run if needed.
 	 * @param	{*=}			opts.local		the lastChance function will be called with this as second parameter if given
 	 * @param	{boolean}		opts.complete	True if this run marks the end of the experimentation (if spread across sessions). Defaults to True
 	 * @param	{number|False}	opts.previous	A number to identify the participation this data should be added to, if this was a continuation. False if not applicable
