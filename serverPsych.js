@@ -229,7 +229,7 @@ var serverPsych = (function djPsych($){
 		metadata.completed = (typeof opts.complete == 'undefined') ? true : opts.complete
 		payload.meta = metadata;
 		if(typeof opts.toSave != "undefined"){
-			$.extend(payload.meta, opts.toSave);
+			metadata.extraParams = opts.toSave
 		}
 		
 		if(!sandbox){
