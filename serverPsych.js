@@ -226,7 +226,7 @@ var serverPsych = (function djPsych($){
 		metadata.current_exp = meta.current_exp;
 		metadata.exp_id = meta.exp_id;
 		metadata.previous = meta.previous || false;
-		metadata.completed = opts.complete || true;
+		metadata.completed = (typeof opts.complete == 'undefined') ? true : opts.complete
 		payload.meta = metadata;
 		if(typeof opts.toSave != "undefined"){
 			$.extend(payload.meta, opts.toSave);
