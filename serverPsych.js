@@ -213,6 +213,8 @@ var Percept = (function djPsych($){
 	 * @param {Object[]}	opts.timeline	The timeline to intersperse with the trial
 	 * @param {String}		opts.mode		
 	 * 
+	 * @return {Object[]}	A new jsPsych timeline with the changes
+	 * 
 	 * @function intersperse
 	 * @memeberof! Percept
 	 * @author Daniel Rivas
@@ -222,18 +224,20 @@ var Percept = (function djPsych($){
 		opts.mode = opts.mode || "centered";
 		if(opts.timeline.length < opts.reps) throw "Cannot insert more trials than the length of the timeline";
 		
+		var timeline = opts.timeline.map(a => Object.assign({}, a));
+		
 		var gap = opts.timeline.length / (opts.reps + (opts.mode == "centered" ? 1: -1));
 		var start = opts.mode === "centered" ? gap : 0;
 		var index  = start;
 		
 		while(opts.reps > 0){
 			
-			opts.timeline.splice(index, 0, opts.trial);
+			timeline.splice(index, 0, opts.trial);
 			
 			index += 1+gap;
 			opts.reps--;
 		}
-		
+		return timeline
 	}
 	
 	/**
