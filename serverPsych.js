@@ -225,8 +225,8 @@ var Percept = (function djPsych($){
 		if(opts.timeline.length < opts.reps) throw "Cannot insert more trials than the length of the timeline";
 		
 		var timeline = opts.timeline.map(a => Object.assign({}, a));
-		
-		var gap = opts.timeline.length / (opts.reps + (opts.mode == "centered" ? 1: -1));
+		var gap = Math.floor(opts.timeline.length / (opts.reps + (opts.mode == "centered" ? 1: -1)));
+
 		var start = opts.mode === "centered" ? gap : 0;
 		var index  = start;
 		
