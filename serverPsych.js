@@ -264,7 +264,7 @@ var Percept = (function djPsych($){
 		} 
 		
 		payload = {};
-		payload.data = opts.data;
+		payload.data = opts.data.values();
 		var metadata = {};
 		metadata.browser = get_browser_info();
 		metadata.name = meta.name;
