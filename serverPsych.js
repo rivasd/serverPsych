@@ -204,7 +204,37 @@ var Percept = (function djPsych($){
 		return newTimeline;
 	};
 	
-	
+	/**
+	 * Inserts a given number of repeats of a particular trial (like a questionnaire or pause) within a given timeline. These inerstions are evenly spaced throughout the timeline
+	 * 
+	 * @param {Object}		opts			Parameters for this function
+	 * @param {Object}		opts.trial		The jsPsych trial object that should be inserted
+	 * @param {number}		opts.reps		How many repeats of this trial should be inserted
+	 * @param {Object[]}	opts.timeline	The timeline to intersperse with the trial
+	 * @param {String}		opts.mode		
+	 * 
+	 * @function intersperse
+	 * @memeberof! Percept
+	 * @author Daniel Rivas
+	 */
+	core.intersperse = function(opts){
+		
+		opts.mode = opts.mode || "centered";
+		if(opts.timeline.length < opts.reps) throw "Cannot insert more trials than the length of the timeline";
+		
+		var gap = opts.timeline.length / (opts.reps + (opts.mode == "centered" ? 1: -1));
+		var start = opts.mode === "centered" ? gap : 0;
+		var index  = start;
+		
+		while(opts.reps > 0){
+			
+			opts.timeline.splice(index, 0, opts.trial);
+			
+			index += 1+gap;
+			opts.reps--;
+		}
+		
+	}
 	
 	/**
 	 * Requests a setting object from the server in order to start an experiment. 
