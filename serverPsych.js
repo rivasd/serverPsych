@@ -345,11 +345,12 @@ var Percept = (function djPsych($){
 		else{
 			// djPsych was started in sandbox mode, dont actually send the request, but gather data and display it in the <textarea>
 			chosenFormat = $("#id_sandbox-format").val();
+			var datadump = jsPsych.data.get();
 			if(chosenFormat == 'csv'){
-				$('#datadump').val(jsPsych.data.getDataAsCSV());
+				$('#datadump').val(datadump.csv());
 			}
 			else if(chosenFormat =='json'){
-				$("#datadump").val(jsPsych.data.getDataAsJSON());
+				$("#datadump").val(datadump.json());
 			}
 		}
 		
