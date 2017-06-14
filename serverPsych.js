@@ -273,6 +273,20 @@ var Percept = (function djPsych($){
 					});
 				}
 				else{
+					
+					//if there is something in the alternative settings box, parse it and use it instead
+					var altSettings = $("#altsettings");
+					if(altSettings.length > 0 && altSettings.val() !== ""){
+						
+						try{
+							var replacement = JSON.parse(altSettings.val());
+						}
+						catch(err){
+							alert("The contents of the alternative settings is not valid JSON")
+						}
+						resp = replacement;
+					}
+					
 					meta = resp;
 					resp.timeline = core.unpack(resp.timeline);
 					callback(resp)
